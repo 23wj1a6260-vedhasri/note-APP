@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DevOps Notes App</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#f4f4f4;
+text-align:center;
+}
+
+h1{
+color:#333;
+}
+
+input{
+padding:10px;
+width:200px;
+}
+
+button{
+padding:10px;
+background:blue;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+ul{
+list-style:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>DevOps Notes Application</h1>
+
+<input id="noteInput" placeholder="Enter note">
+<button onclick="addNote()">Add Note</button>
+
+<h2>Notes</h2>
+<ul id="notesList"></ul>
+
+<script>
+
+function addNote(){
+
+const note = document.getElementById("noteInput").value
+
+fetch("/notes",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({note:note})
+})
+
+.then(res=>res.text())
+.then(data=>{
+alert(data)
+loadNotes()
+})
+
+}
+
+function loadNotes(){
+
+fetch("/notes")
+.then(res=>res.json())
+.then(data=>{
+
+const list=document.getElementById("notesList")
+list.innerHTML=""
+
+data.forEach(n=>{
+const li=document.createElement("li")
+li.textContent=n
+list.appendChild(li)
+})
+
+})
+
+}
+
+loadNotes()
+
+</script>
+
+</body>
+</html>

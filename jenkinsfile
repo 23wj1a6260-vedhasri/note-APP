@@ -1,0 +1,26 @@
+pipeline {
+ agent any
+
+ stages {
+
+  stage('Clone Repository'){
+   steps{
+    git 'https://github.com/username/devops-notes-app.git'
+   }
+  }
+
+  stage('Build Docker Image'){
+   steps{
+    sh 'docker build -t devops-notes-app .'
+   }
+  }
+
+  stage('Run Container'){
+   steps{
+    sh 'docker run -d -p 3000:3000 devops-notes-app'
+   }
+  }
+
+ }
+
+}
